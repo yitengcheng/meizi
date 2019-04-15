@@ -1,2 +1,5 @@
-scrapySpider\images
-.vscode
+/.vscode
+/scrapySpider/__pycache__
+/scrapySpider/cookie
+/scrapySpider/images
+/scrapySpider/spider/__pycache__
