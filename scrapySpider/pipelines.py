@@ -6,6 +6,7 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 from scrapy.pipelines.images import ImagesPipeline
 import scrapy
+from scrapy.exporters import JsonItemExporter
 from pathlib import Path
 import os
 import requests
@@ -17,6 +18,23 @@ import re
 class ScrapyspiderPipeline(object):
 
     def process_item(self, item, spider):
+        return item
+
+
+class JsonExporterPipeline(object):
+    # 调用scrapy提供的json export导出json文件
+    def __init__(self):
+        self.file = open('item.json', 'wb')
+        self.exporter = JsonItemExporter(
+            self.file, encoding='utf-8', ensure_ascii=False)
+        self.exporter.start_exporting()
+
+    def close_spider(self, spider):
+        self.exporter.finish_exporting()
+        self.file.close()
+
+    def process_item(self, item, spider):
+        self.exporter.export_item(item)
         return item
 
 

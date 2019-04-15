@@ -92,10 +92,8 @@ DOWNLOADER_MIDDLEWARES = {
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 ITEM_PIPELINES = {
-    # 配置图片下载
-    # scrapy.pipeline.images.ImagesPipeline为调用配置, 数值代表优先级
-    # 'scrapy.pipelines.images.ImagesPipeline': 1,
     'scrapySpider.pipelines.ArticleImagePipeline': 300,
+    'scrapySpider.pipelines.JsonExporterPipeline': 1,
 }
 # 配置下载图片的url
 IMAGES_URLS_FIELD = "img_url"
