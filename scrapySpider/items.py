@@ -23,5 +23,5 @@ class ArticleItemLoader(ItemLoader):
 
 class MeiziItem(scrapy.Item):
     img_url = scrapy.Field()
-    img_path = scrapy.Field()
     title = scrapy.Field()
+    url = scrapy.Field()
