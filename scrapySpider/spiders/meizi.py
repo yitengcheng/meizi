@@ -5,6 +5,8 @@ from scrapy.spiders import CrawlSpider, Rule
 from scrapySpider.items import MeiziItem
 from scrapy.loader import ItemLoader
 from scrapySpider.utils.common import get_browser
+import json
+from scrapySpider.pipelines import MongoPipeline
 
 
 class MeiziSpider(CrawlSpider):
@@ -22,11 +24,15 @@ class MeiziSpider(CrawlSpider):
     )
 
     def parse_item(self, response):
-        item_loader = ItemLoader(item=MeiziItem(), response=response)
-        item_loader.add_css('img_url', '.main-image p a img::attr(src)')
-        item_loader.add_css('title', '.main-title::text')
-        item_loader.add_value('url', response.url)
-        return item_loader.load_item()
+        coll = MongoPipeline()
+        img_url = response.css('.main-image p a img::attr(src)').extract()
+        res = coll.find_one('img_url', img_url)
+        if not res:
+            item_loader = ItemLoader(item=MeiziItem(), response=response)
+            item_loader.add_value('img_url', img_url)
+            item_loader.add_css('title', '.main-title::text')
+            item_loader.add_value('url', response.url)
+            return item_loader.load_item()
 
     def parse_start_url(self, response):
         if not self.cookie_dict:

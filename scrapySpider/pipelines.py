@@ -13,6 +13,8 @@ import requests
 import uuid
 from scrapySpider.settings import USER_AGENT, IMAGES_STORE
 import re
+from scrapy.conf import settings
+import pymongo
 
 
 class ScrapyspiderPipeline(object):
@@ -24,7 +26,7 @@ class ScrapyspiderPipeline(object):
 class JsonExporterPipeline(object):
     # 调用scrapy提供的json export导出json文件
     def __init__(self):
-        self.file = open('item.json', 'wb')
+        self.file = open('meizi.json', 'wb')
         self.exporter = JsonItemExporter(
             self.file, encoding='utf-8', ensure_ascii=False)
         self.exporter.start_exporting()
@@ -36,6 +38,25 @@ class JsonExporterPipeline(object):
     def process_item(self, item, spider):
         self.exporter.export_item(item)
         return item
+
+
+class MongoPipeline(object):
+
+    def __init__(self):
+        client = pymongo.MongoClient(
+            host=settings['MONGO_HOST'], port=settings['MONGO_PORT'])
+        self.db = client[settings['MONGO_DB']]  # 获得数据库句柄
+        self.coll = self.db[settings['MONGO_COLL']]  # 获得collection的句柄
+        # 数据库登录需要密码
+        self.db.authenticate(settings['MONGO_USER'], settings['MONGO_PSW'])
+
+    def process_item(self, item, spider):
+        post_item = dict(item)
+        self.coll.save(post_item)
+        return item
+
+    def find_one(self, find_name, find_value):
+        return self.coll.find_one({find_name: find_value})
 
 
 class ArticleImagePipeline(ImagesPipeline):

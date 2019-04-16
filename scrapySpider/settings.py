@@ -93,7 +93,8 @@ DOWNLOADER_MIDDLEWARES = {
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 ITEM_PIPELINES = {
     'scrapySpider.pipelines.ArticleImagePipeline': 300,
-    'scrapySpider.pipelines.JsonExporterPipeline': 1,
+    'scrapySpider.pipelines.MongoPipeline': 200,
+    # 'scrapySpider.pipelines.JsonExporterPipeline': 1,
 }
 # 配置下载图片的url
 IMAGES_URLS_FIELD = "img_url"
@@ -102,3 +103,10 @@ IMAGES_RESULT_FIELD = "img_path"
 project_dir = os.path.abspath(os.path.dirname(__file__))
 IMAGES_STORE = os.path.join(project_dir, 'images')
 DOWNLOAD_DELAY = 2
+
+MONGO_HOST = "127.0.0.1"  # 主机IP
+MONGO_PORT = 27017  # 端口号
+MONGO_DB = "spider"  # 库名
+MONGO_COLL = "meizi"  # collection名
+MONGO_USER = "root"  # 用户名
+MONGO_PSW = "root"  # 用户密码
