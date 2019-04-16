@@ -11,10 +11,12 @@ from pathlib import Path
 import os
 import requests
 import uuid
-from scrapySpider.settings import USER_AGENT, IMAGES_STORE
+from scrapySpider.settings import IMAGES_STORE
 import re
 from scrapy.conf import settings
 import pymongo
+from scrapySpider.tools.xici_ip import GetIP
+from fake_useragent import UserAgent
 
 
 class ScrapyspiderPipeline(object):
@@ -62,7 +64,14 @@ class MongoPipeline(object):
 class ArticleImagePipeline(ImagesPipeline):
 
     def get_media_requests(self, item, info):
-        headers = {'User-Agent': USER_AGENT, 'Referer': 'http://www.baidu.com/'}
+        get_ip = GetIP()
+        ip = get_ip.get_random_ip()
+        proxy_type = ip.split(':')[0]
+        proxy_dict = {proxy_type: ip}
+        headers = {
+            'User-Agent': UserAgent().random,
+            'Referer': 'http://www.baidu.com/'
+        }
         res = re.match(r'(.+)（\d+）', item['title'][0])
         if res:
             title = res.group(1)
@@ -76,7 +85,11 @@ class ArticleImagePipeline(ImagesPipeline):
         if not my_file.exists():
             os.makedirs(my_file)
         for img_url in img_urls:
-            response = requests.get(img_url, headers=headers)
+            response = requests.get(
+                img_url,
+                headers=headers,
+                proxies=proxy_dict,
+            )
             with open(wb_path.format(file_path, img_name), 'wb') as fd:
                 for chunk in response.iter_content(128):
                     fd.write(chunk)

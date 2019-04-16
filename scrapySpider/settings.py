@@ -56,7 +56,9 @@ COOKIES_DEBUG = True
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     # 'scrapySpider.middlewares.ScrapyspiderDownloaderMiddleware': 543,
-    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': 2,
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+    'ArticleSpider.middlewares.RandomUserAgentMiddleware': 2,
+    'ArticleSpider.middlewares.RandomProxyMiddleware': 1,
 }
 
 # Enable or disable extensions
@@ -110,3 +112,5 @@ MONGO_DB = "spider"  # 库名
 MONGO_COLL = "meizi"  # collection名
 MONGO_USER = "root"  # 用户名
 MONGO_PSW = "root"  # 用户密码
+
+RANDOM_TYPE = 'random'
