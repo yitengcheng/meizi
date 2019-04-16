@@ -57,8 +57,8 @@ COOKIES_DEBUG = True
 DOWNLOADER_MIDDLEWARES = {
     # 'scrapySpider.middlewares.ScrapyspiderDownloaderMiddleware': 543,
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
-    'ArticleSpider.middlewares.RandomUserAgentMiddleware': 2,
-    'ArticleSpider.middlewares.RandomProxyMiddleware': 1,
+    'scrapy.middlewares.RandomUserAgentMiddleware': 2,
+    'scrapy.middlewares.RandomProxyMiddleware': 1,
 }
 
 # Enable or disable extensions
