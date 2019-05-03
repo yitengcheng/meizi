@@ -121,7 +121,7 @@ class RandomUserAgentMiddleware(object):
         def get_ua():
             return getattr(self.ua, self.ua_type)
 
-        request.heades.setdefault('User-Agent', get_ua())
+        request.headers.setdefault('User-Agent', get_ua())
 
 
 class RandomProxyMiddleware(object):

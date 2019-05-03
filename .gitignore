@@ -4,3 +4,4 @@
 /scrapySpider/images
 /scrapySpider/spider/__pycache__
 item.json
+scrapySpider/tools/test.py
