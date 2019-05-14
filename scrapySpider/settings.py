@@ -19,7 +19,7 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 # USER_AGENT = 'scrapySpider (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-# ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
@@ -58,6 +58,7 @@ DOWNLOADER_MIDDLEWARES = {
     # 'scrapySpider.middlewares.ScrapyspiderDownloaderMiddleware': 543,
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
     'scrapySpider.middlewares.RandomUserAgentMiddleware': 2,
+    'scrapySpider.middlewares.JSPageMiddleware': 1,
     # 'scrapySpider.middlewares.RandomProxyMiddleware': 1,
 }
 

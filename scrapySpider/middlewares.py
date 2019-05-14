@@ -8,6 +8,9 @@
 from scrapy import signals
 from fake_useragent import UserAgent
 from scrapySpider.tools.xici_ip import GetIP
+import time
+from scrapy.http import HtmlResponse
+from scrapySpider.utils.common import get_browser
 
 
 class ScrapyspiderSpiderMiddleware(object):
@@ -130,3 +133,18 @@ class RandomProxyMiddleware(object):
         # 动态设置ip代理
         get_ip = GetIP()
         request.meta['proxy'] = get_ip.get_random_ip()
+
+
+class JSPageMiddleware(object):
+    # 通过chrome请求网页
+    def process_request(self, request, spider):
+        if spider.name == 'caoliu':
+            browser = get_browser()
+            browser.get(request.url)
+            time.sleep(5)
+            print("访问：{0}".format(request.url))
+            return HtmlResponse(
+                url=browser.current_url,
+                body=browser.page_source,
+                encoding='utf-8',
+                request=request)

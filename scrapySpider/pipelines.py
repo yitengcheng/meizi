@@ -73,7 +73,7 @@ class ArticleImagePipeline(ImagesPipeline):
         else:
             title = item['title'][0]
         img_urls = item['img_url']
-        file_path = IMAGES_STORE + '/' + title
+        file_path = 'F:/workspace/images/meizi/' + title
         my_file = Path(file_path)
         img_name = uuid.uuid1()
         wb_path = '{0}/{1}.jpg'

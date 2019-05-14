@@ -5,7 +5,6 @@ from scrapy.spiders import CrawlSpider, Rule
 from scrapySpider.items import MeiziItem
 from scrapy.loader import ItemLoader
 from scrapySpider.utils.common import get_browser
-import json
 from scrapySpider.pipelines import MongoPipeline
 
 
