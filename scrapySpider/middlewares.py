@@ -113,6 +113,7 @@ class RandomUserAgentMiddleware(object):
     def __init__(self, crawler):
         super(RandomUserAgentMiddleware, self).__init__
         self.ua = UserAgent()
+        self.ua.update()
         self.ua_type = crawler.settings.get('RANDOM_TYPE', 'random')
 
     @classmethod
