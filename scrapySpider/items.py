@@ -22,6 +22,7 @@ class ArticleItemLoader(ItemLoader):
 
 
 class MeiziItem(scrapy.Item):
-    img_url = scrapy.Field()
-    title = scrapy.Field()
-    url = scrapy.Field()
+    img_url = scrapy.Field(output_processor=TakeFirst())
+    title = scrapy.Field(output_processor=TakeFirst())
+    url = scrapy.Field(output_processor=TakeFirst())
+    file_path = scrapy.Field(output_processor=TakeFirst())

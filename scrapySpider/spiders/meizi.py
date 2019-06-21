@@ -16,7 +16,7 @@ class MeiziSpider(CrawlSpider):
 
     rules = (
         Rule(
-            LinkExtractor(allow=r'\d+|\d+/\d+'),
+            LinkExtractor(allow=r'\d+|\d+/\d+', deny=r'zipai/.*/'),
             callback='parse_item',
             follow=True),
         Rule(LinkExtractor(allow=r'.+'), follow=True),
@@ -31,6 +31,7 @@ class MeiziSpider(CrawlSpider):
             item_loader.add_value('img_url', img_url)
             item_loader.add_css('title', '.main-title::text')
             item_loader.add_value('url', response.url)
+            item_loader.add_value('file_path', '')
             return item_loader.load_item()
 
     def parse_start_url(self, response):

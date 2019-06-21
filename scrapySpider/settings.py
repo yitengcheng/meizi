@@ -56,7 +56,7 @@ COOKIES_DEBUG = True
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     # 'scrapySpider.middlewares.ScrapyspiderDownloaderMiddleware': 543,
-    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+    # 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': 2,
     'scrapySpider.middlewares.RandomUserAgentMiddleware': 2,
     'scrapySpider.middlewares.JSPageMiddleware': 1,
     # 'scrapySpider.middlewares.RandomProxyMiddleware': 1,
@@ -95,7 +95,7 @@ DOWNLOADER_MIDDLEWARES = {
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 ITEM_PIPELINES = {
-    'scrapySpider.pipelines.ArticleImagePipeline': 300,
+    'scrapySpider.pipelines.ArticleImagePipeline': 100,
     'scrapySpider.pipelines.MongoPipeline': 200,
     # 'scrapySpider.pipelines.JsonExporterPipeline': 1,
 }
@@ -105,7 +105,7 @@ IMAGES_RESULT_FIELD = "img_path"
 # 配置图片下载路径
 project_dir = os.path.abspath(os.path.dirname(__file__))
 IMAGES_STORE = os.path.join(project_dir, 'images')
-DOWNLOAD_DELAY = 0.5
+# DOWNLOAD_DELAY = 0.5
 
 MONGO_HOST = "127.0.0.1"  # 主机IP
 MONGO_PORT = 27017  # 端口号

@@ -74,6 +74,7 @@ class ArticleImagePipeline(ImagesPipeline):
             title = item['title'][0]
         img_urls = item['img_url']
         file_path = 'F:/workspace/images/meizi/' + title
+        item['file_path'] = file_path
         my_file = Path(file_path)
         img_name = uuid.uuid1()
         wb_path = '{0}/{1}.jpg'
