@@ -52,8 +52,21 @@ class MongoPipeline(object):
         self.db.authenticate(settings['MONGO_USER'], settings['MONGO_PSW'])
 
     def process_item(self, item, spider):
-        post_item = dict(item)
-        self.coll.save(post_item)
+        res = re.match(r'(.+)（\d+）', item['title'])
+        if res:
+            title = res.group(1)
+        else:
+            title = item['title']
+        doc = self.coll.find_one({'title': title})
+        if doc:
+            doc['img_url'].append(item['img_url'][0])
+            self.coll.update({'_id': doc['_id']},
+                             {'$set': {
+                                 'img_url': doc['img_url']
+                             }})
+        else:
+            post_item = dict(item)
+            self.coll.save(post_item)
         return item
 
     def find_one(self, find_name, find_value):
@@ -67,12 +80,11 @@ class ArticleImagePipeline(ImagesPipeline):
             'User-Agent': UserAgent().random,
             'Referer': 'http://www.baidu.com/'
         }
-        res = re.match(r'(.+)（\d+）', item['title'][0])
+        res = re.match(r'(.+)（\d+）', item['title'])
         if res:
             title = res.group(1)
         else:
-            title = item['title'][0]
-        img_urls = item['img_url']
+            title = item['title']
         file_path = 'F:/workspace/images/meizi/' + title
         item['file_path'] = file_path
         my_file = Path(file_path)
@@ -80,11 +92,11 @@ class ArticleImagePipeline(ImagesPipeline):
         wb_path = '{0}/{1}.jpg'
         if not my_file.exists():
             os.makedirs(my_file)
-        for img_url in img_urls:
+        for url in item['img_url']:
             response = requests.get(
-                img_url,
+                url,
                 headers=headers,
             )
-            with open(wb_path.format(file_path, img_name), 'wb') as fd:
-                for chunk in response.iter_content(128):
-                    fd.write(chunk)
+        with open(wb_path.format(file_path, img_name), 'wb') as fd:
+            for chunk in response.iter_content(128):
+                fd.write(chunk)
